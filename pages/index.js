@@ -1,4 +1,4 @@
-import { Flex, Button,Input, Card, CardBody } from '@chakra-ui/react'
+import { Button,Input, Card, CardBody } from '@chakra-ui/react'
 import {useState } from 'react';
 const Home = () =>{
 
@@ -12,6 +12,7 @@ const Home = () =>{
 
   const handleSubmit = async (e) =>{
     e.preventDefault();
+
     const response = await fetch('/api/suggest', {
       method:'POST',
       headers:{
@@ -21,6 +22,7 @@ const Home = () =>{
         Ingredients,
       }),
     })
+  
 
     const data = await response.json();
     setresult(data.data[0].text.trim('\n').split("\n"))
