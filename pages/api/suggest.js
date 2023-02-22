@@ -5,30 +5,34 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function getSuggestions(prompt){ 
+async function getSuggestions(prompt) {
 
-const response = await openai.createCompletion({
+  const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
-    temperature: 0,
     max_tokens: 3000,
+    temperature:0.7,
+    top_p:1,
+    frequency_penalty:0,
+    presence_penalty:0
 
   })
-const choices = response.data.choices
-console.log(response.data)
-var res = JSON.parse(choices)
-return choices
+  const choices = response.data.choices
+  console.log(response.data)
+  var res = JSON.parse(choices)
+  return res
 }
 
-export default async function handler(req, res){
-  try{
-    const {Ingredients} = req.body;
+export default async function handler(req, res) {
+  try {
+    const { Ingredients } = req.body;
     const prompt = `give the list of 10 recipes that can be made with ${Ingredients}`;
 
     var choices = await getSuggestions(prompt);
-    return res.status(200).json({data: choices});}
-    catch(e){
-      console.log(e);
-    }
+    return res.status(200).json({ data: choices });
+  }
+  catch (e) {
+    console.log(e);
+  }
 }
 
