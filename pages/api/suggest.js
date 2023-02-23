@@ -12,15 +12,12 @@ async function getSuggestions(prompt) {
     prompt: prompt,
     max_tokens: 3000,
     temperature:0.7,
-    top_p:1,
-    frequency_penalty:0,
-    presence_penalty:0
+    // top_p:1,
+    // frequency_penalty:0,
+    // presence_penalty:0
 
-  })
-  const choices = response.data.choices
-  console.log(response.data)
-  var res = JSON.parse(choices)
-  return res
+  });
+  return response.data.choices;
 }
 
 export default async function handler(req, res) {
@@ -35,4 +32,3 @@ export default async function handler(req, res) {
     console.log(e);
   }
 }
-

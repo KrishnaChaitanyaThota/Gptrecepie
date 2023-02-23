@@ -28,6 +28,7 @@ const Home = () =>{
     setresult(data.data[0].text.trim('\n').split("\n"))
 
     console.log(data.data[0].text.trim('\n').split("\n"));
+    
   }
   
 
