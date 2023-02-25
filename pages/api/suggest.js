@@ -29,6 +29,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ data: choices });
   }
   catch (e) {
-    console.log(e);
+    console.log(e.message);
   }
 }
