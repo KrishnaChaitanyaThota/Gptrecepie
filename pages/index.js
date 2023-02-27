@@ -1,7 +1,8 @@
-import { Button, Input, Card, CardBody} from '@chakra-ui/react' 
+import { Button, Input, Card, CardBody,IconButton} from '@chakra-ui/react' ;
+import { useColorMode } from '@chakra-ui/react';
 import {useState } from 'react';
 import Head from 'next/head';
-import {SunIcon} from '@chakra-ui/icons';
+import {SunIcon, MoonIcon} from '@chakra-ui/icons';
 
 const Home = () => {
   const [Ingredients, setIngredients] = useState("");
@@ -9,6 +10,8 @@ const Home = () => {
   const [loading, setloading] = useState(false);
 
   const [result, setresult] = useState([]);
+
+  const { colorMode, toggleColorMode } = useColorMode()
 
   const handleChange = (e) => {
     setIngredients(e.target.value);
@@ -47,7 +50,9 @@ const Home = () => {
       <center >
         <Input onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingrident's for your dish" width='80vw' />
 
-        <SunIcon/>
+        <Button onClick={toggleColorMode}>
+       {colorMode === 'light' ? 'Dark' : 'Light'} Theme
+      </Button>
 
         <Button
           size='md'
