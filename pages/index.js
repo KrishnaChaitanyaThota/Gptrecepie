@@ -1,6 +1,7 @@
 import { Button, Input, Card, CardBody} from '@chakra-ui/react' 
 import {useState } from 'react';
 import Head from 'next/head';
+import {SunIcon} from '@chakra-ui/icons';
 
 const Home = () => {
   const [Ingredients, setIngredients] = useState("");
@@ -28,7 +29,7 @@ const Home = () => {
         Ingredients,
       }),
     })
-    
+
     const data = await response.json();
     setresult(data.data[0].text.trim('\n').split("\n"))
     setloading(false)
@@ -44,8 +45,9 @@ const Home = () => {
 
     <div height={"100vh"} width={"100vw"} overflow={'scroll'} >
       <center >
-
         <Input onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingrident's for your dish" width='80vw' />
+
+        <SunIcon/>
 
         <Button
           size='md'
