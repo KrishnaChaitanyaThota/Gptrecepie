@@ -1,8 +1,8 @@
-import { Button, Input, Card, CardBody,IconButton} from '@chakra-ui/react' ;
+import { Button, Input, Card, CardBody, HStack} from '@chakra-ui/react' ;
 import { useColorMode } from '@chakra-ui/react';
 import {useState } from 'react';
 import Head from 'next/head';
-import {SunIcon, MoonIcon} from '@chakra-ui/icons';
+import RHome from './recipe';
 
 const Home = () => {
   const [Ingredients, setIngredients] = useState("");
@@ -19,7 +19,6 @@ const Home = () => {
   }
 
   const handleSubmit = async (e) => {
-    console.log("running sub,it")
     e.preventDefault();
     setloading(true);
 
@@ -48,7 +47,7 @@ const Home = () => {
 
     <div height={"100vh"} width={"100vw"} overflow={'scroll'} >
       <center >
-        <Input onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingrident's for your dish" width='80vw' />
+        <Input onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingredients for your dish" width='80vw' />
 
         <Button onClick={toggleColorMode}>
        {colorMode === 'light' ? 'Dark' : 'Light'} Theme
@@ -70,7 +69,8 @@ const Home = () => {
 
       </center>
 
-      {loading ? <center> <Button
+      {loading ? 
+       <center> <Button
         isLoading
         loadingText='Loading'
         colorScheme='teal'
@@ -80,16 +80,21 @@ const Home = () => {
       >
         Submit
       </Button> </center> :
+      
         result.map((item, index) => {
+
           return (
-            <Card variant={'filled'} m={4} key={index}><CardBody>{item}</CardBody></Card>
+            <>
+            <HStack>
+            <Card direction='row' width='80vw' variant={'filled'} m={4} key={index}><CardBody>{item}</CardBody>
+            </Card> <Button>View recipe</Button> <RHome />
+            </HStack>
+            </>
           )
         })}
     </div>
     </>
   );
-
-
 };
 
 
