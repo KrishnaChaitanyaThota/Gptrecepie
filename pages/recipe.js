@@ -14,6 +14,7 @@ const RHome = () =>{
 
     useEffect(() =>{
       const suggestrecipe = async() =>{
+        try{
         const response = await fetch('/api/suggestrecipe', {
           method: 'POST',
           headers: {
@@ -27,7 +28,11 @@ const RHome = () =>{
         const data = await response.json();
         console.log(data.data[0].text)
         setitem(data.data[0].text);
+      }catch(e){
+      console.log(e.message);
       }
+    }
+    
       suggestrecipe();
     },[])
 
