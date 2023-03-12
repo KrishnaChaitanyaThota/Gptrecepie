@@ -2,7 +2,7 @@ import { Button, Input, Card, CardBody, HStack} from '@chakra-ui/react' ;
 import { useColorMode } from '@chakra-ui/react';
 import {useState } from 'react';
 import Head from 'next/head';
-import RHome from './recipe';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const [Ingredients, setIngredients] = useState("");
@@ -11,7 +11,9 @@ const Home = () => {
 
   const [result, setresult] = useState([]);
 
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const router = useRouter();
 
   const handleChange = (e) => {
     setIngredients(e.target.value);
@@ -33,10 +35,16 @@ const Home = () => {
     })
 
     const data = await response.json();
+    console.log(data.data)
     setresult(data.data[0].text.trim('\n').split("\n"))
     setloading(false)
 
   }
+
+  const handlerecipe = (recipe) => () =>{
+      router.push({pathname: "/recipe", query: {recipe}})
+      
+  };
 
   return (
     <>
@@ -87,7 +95,8 @@ const Home = () => {
             <>
             <HStack>
             <Card direction='row' width='80vw' variant={'filled'} m={4} key={index}><CardBody>{item}</CardBody>
-            </Card> <Button>View recipe</Button> <RHome />
+            </Card> <Button onClick={handlerecipe(item)}  colorScheme='teal' variant='outline'> view recipe </Button>
+            
             </HStack>
             </>
           )

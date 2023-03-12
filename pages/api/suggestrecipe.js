@@ -5,11 +5,11 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function getrecipeSuggestions(recipeprompt) {
+async function getSuggestions(prompt) {
 
   const response = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: recipeprompt,
+    prompt: prompt,
     max_tokens: 3000,
     temperature:0.7,
 
@@ -19,11 +19,11 @@ async function getrecipeSuggestions(recipeprompt) {
 
 export default async function handler(req, res) {
   try {
-    const { Ingredients } = req.body;
-    const recipeprompt = `Give the recipe of making the dish in one paragraph by using only the mentioned ingredients : ${Ingredients}`;
+    const { recipe } = req.body;
+    const prompt = `give the recipe of ${recipe} in 250 words`;
 
-    var choices = await getrecipeSuggestions(recipeprompt);
-    return res.status(200).json({ data: choices });
+    var choices = await getSuggestions(prompt);
+    return( res.status(200).json({ data: choices }));
   }
   catch (e) {
     console.log(e.message);

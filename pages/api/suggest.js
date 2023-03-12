@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const prompt = `give the list of 10 recipes that can be made with ${Ingredients}`;
 
     var choices = await getSuggestions(prompt);
-    return res.status(200).json({ data: choices });
+    return( res.status(200).json({ data: choices }));
   }
   catch (e) {
     console.log(e.message);

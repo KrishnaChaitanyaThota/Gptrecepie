@@ -1,46 +1,56 @@
-import { Button, Card, CardBody} from '@chakra-ui/react' ;
-import {useState } from 'react';
+import { Button} from '@chakra-ui/react' ;
+import { useColorMode } from '@chakra-ui/react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect,useState } from 'react';
 
-const RHome = () => {
+const RHome = () =>{
 
-  const [reciperesult, setreciperesult] = useState([]);
+    const { colorMode, toggleColorMode } = useColorMode();
+    const router = useRouter();
+    console.log(router.query)
 
-  const recipehandleSubmit = async (e) => {
-    e.preventDefault();
-    setloading(true);
+    const [item, setitem] = useState(null);
 
-
-    const response = await fetch('/api/suggestrecipe.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        Ingredients,
-      }),
-    })
-
-    const data = await response.json();
-    setreciperesult(data.data[0].text.trim('\n').split("\n"))
-    setloading(false)
-
-  }
-
-  return (
-    reciperesult.map((item, index) => {
-
-          return (
-            <>
-            <Button  onClick={recipehandleSubmit}>View recipe</Button> 
-            <Card direction='row' width='80vw' variant={'filled'} m={4} key={index}><CardBody>{item}</CardBody>
-            </Card> 
-            </>
-          )
+    useEffect(() =>{
+      const suggestrecipe = async() =>{
+        const response = await fetch('/api/suggestrecipe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            recipe:router.query.recipe,
+          }),
         })
-  );
+    
+        const data = await response.json();
+        console.log(data.data[0].text)
+        setitem(data.data[0].text);
+      }
+      suggestrecipe();
+    },[])
 
 
-};
 
+    return(
+        <>
+    <Head>
+      <title>Recipe suggesting App</title>
+    </Head>
+
+    <div height={"100vh"} width={"100vw"} overflow={'scroll'} >
+
+       <Button ml="85vw" mt="6" onClick={toggleColorMode}>
+       {colorMode === 'light' ? 'Dark' : 'Light'} Theme
+      </Button>
+      <p>{router.query.recipe}</p>
+      <pre>{item}</pre>
+      
+    </div>
+    </>
+    )
+
+}
 
 export default RHome;
