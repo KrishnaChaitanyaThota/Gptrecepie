@@ -20,7 +20,7 @@ async function getSuggestions(prompt) {
 export default async function handler(req, res) {
   try {
     const { recipe } = req.body;
-    const prompt = `give the recipe of ${recipe} in 250 words`;
+    const prompt = `Give one recipe of ${recipe}`;
 
     var choices = await getSuggestions(prompt);
     return( res.status(200).json({ data: choices }));

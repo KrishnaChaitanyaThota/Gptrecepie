@@ -34,7 +34,9 @@ const RHome = () =>{
     }
     
       suggestrecipe();
-    },[])
+   
+    }, [])
+      
 
 
 
