@@ -1,11 +1,14 @@
 import { Button, Input, Card, CardBody, HStack} from '@chakra-ui/react' ;
 import { useColorMode } from '@chakra-ui/react';
-import {useState } from 'react';
+import {useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+
+
+
 const Home = () => {
-  const [Ingredients, setIngredients] = useState("");
+  const [Ingredients, setIngredients] = useState('');
 
   const [loading, setloading] = useState(false);
 
@@ -15,8 +18,21 @@ const Home = () => {
 
   const router = useRouter();
 
+  useEffect( () =>{
+    const data =  JSON.parse(window.localStorage.getItem('result'));
+    if (data !== []) setresult(data);
+    console.log('data', data);
+
+  }, [])
+
+  // useEffect( () =>{
+  //   window.localStorage.setItem('result', JSON.stringify(result));
+
+  // }, [result])
+
   const handleChange = (e) => {
     setIngredients(e.target.value);
+    // setIngredients((prev) =>({ ...prev, [name]:value }))
     
   }
 
@@ -35,13 +51,21 @@ const Home = () => {
     })
 
     const data = await response.json();
-    console.log(data.data)
-    setresult(data.data[0].text.trim('\n').split("\n"))
+    console.log(data.data[0])
+    const myResult = data.data[0].text.trim('\n').split("\n")
+    setresult(myResult)
+    window.localStorage.setItem('result', JSON.stringify(myResult));
+
     setloading(false)
 
   }
 
   const handlerecipe = (recipe) => () =>{
+    // window.history.forward();
+    // function noBack()
+    // {
+    //     window.history.forward();
+    // }
       router.push({pathname: "/recipe", query: {recipe}})
       
   };
@@ -55,7 +79,7 @@ const Home = () => {
 
     <div height={"100vh"} width={"100vw"} overflow={'scroll'} >
       <center >
-        <Input onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingredients for your dish" width='80vw' />
+        <Input type="search" name="q" onChange={(e) => { handleChange(e) }} margin='6' color='gold' _placeholder={{ color: 'inherit' }} bg={"black"} textColor={"gold"} placeholder=" Enter ingredients for your dish" width='80vw' />
 
         <Button onClick={toggleColorMode}>
        {colorMode === 'light' ? 'Dark' : 'Light'} Theme
@@ -95,7 +119,7 @@ const Home = () => {
             <>
             <HStack>
             <Card direction='row' width='80vw' variant={'filled'} m={4} key={index}><CardBody>{item}</CardBody>
-            </Card> <Button onClick={handlerecipe(item)}  colorScheme='teal' variant='outline'> view recipe </Button>
+            </Card> <Button onClick={handlerecipe(item)}  colorScheme='teal' variant='outline' > view recipe </Button>
             
             </HStack>
             </>
@@ -107,4 +131,7 @@ const Home = () => {
 };
 
 
+
+
 export default Home;
+
